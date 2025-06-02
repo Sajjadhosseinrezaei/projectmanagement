@@ -1,7 +1,11 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'manager', views.UsersManager, basename='manager')
 
 app_name = 'accounts'
 urlpatterns = [
-    path('list/', views.ListUsers.as_view(), name='list'),
+    path('', include(router.urls)),
 ]

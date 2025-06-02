@@ -31,6 +31,11 @@ class Project(models.Model):
         auto_now_add=True,
         help_text="تاریخ و زمان ایجاد پروژه، به صورت خودکار هنگام ساخت تنظیم می‌شود"
     )
+
+    updated = models.DateTimeField(
+        auto_now=True,
+        help_text="آخرین زمان ویرایش پروژه ، به صورت خودکار ثبت میشود"
+    )
     owner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
