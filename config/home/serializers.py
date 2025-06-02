@@ -6,19 +6,15 @@ from accounts.models import User
 
 
 
-class ProjectSerializers(serializers.ModelSerializer):
-    # user = serializers.PrimaryKeyRelatedField(
-    #     queryset=User.objects.all(),
-    #     source='owner'
-
-    # )
-
-    # members = serializers.ManyRelatedField(
-    #     queryset=User.objects.all(),
-    #     many=True
-    # )
-
+class ProjectSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Project
         fields = ['id', 'title', 'description', 'owner', 'members' ]
+
+class TaskSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Task
+        fields = '__all__'
         
