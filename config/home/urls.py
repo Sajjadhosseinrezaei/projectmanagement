@@ -13,6 +13,6 @@ router.register(r'task-manager', views.TaskManager, basename='task-manager')
 app_name = 'home'
 urlpatterns = [
     path('', include(router.urls)),
-    path('dashboard', views.DashboardView.as_view(), name='dashboard'),
+    path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
     
 ]
