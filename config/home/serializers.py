@@ -17,4 +17,28 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = '__all__'
-        
+
+
+class DashboardSerializer(serializers.Serializer):
+    completed_tasks = serializers.SerializerMethodField()
+    pending_tasks = serializers.SerializerMethodField()
+    projects = serializers.SerializerMethodField()
+
+
+
+    def get_completed_tasks(self, obj):
+        return Task.objects.filter(status='completed').count()
+
+    def get_pending_tasks(self, obj):
+        return Task.objects.filter(status='pending').count()
+    
+
+    def get_projects(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            projects = Project.objects.filter(owner=request.user)
+            if projects.exists():
+                return ProjectSerializer(projects, many=True).data
+        return None
+
+
