@@ -8,4 +8,7 @@ router.register(r'manager', views.UsersManager, basename='manager')
 app_name = 'accounts'
 urlpatterns = [
     path('', include(router.urls)),
+    path('profile/', views.UserProfileView.as_view(), name='profile'),
+    path('profile/set_password', views.SetPasswordView.as_view(), name='set_password'),
+    
 ]

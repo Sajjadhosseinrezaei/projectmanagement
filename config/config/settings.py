@@ -164,6 +164,11 @@ REST_FRAMEWORK = {
     ),
 }
 
+# settings.py
+SIMPLE_JWT = {
+    # ... سایر تنظیمات
+    "TOKEN_OBTAIN_SERIALIZER": "accounts.serializers.MyTokenObtainPairSerializerWithUserData",
+}
 
 
 SPECTACULAR_SETTINGS = {

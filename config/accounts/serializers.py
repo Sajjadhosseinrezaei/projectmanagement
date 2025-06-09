@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import User
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -9,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
                                      })
     class Meta:
         model = User
-        fields = ['id', 'name', 'email', 'password'] 
+        fields = ['id', 'name', 'email', 'password', 'is_staff'] 
 
 
     def create(self, validated_data):
@@ -36,3 +37,13 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+    
+# افزودن اطلاعات کاربر برای تعیین دسترسی 
+class MyTokenObtainPairSerializerWithUserData(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        serializer = UserSerializer(self.user)
+        data['user'] = serializer.data
+
+        return data
