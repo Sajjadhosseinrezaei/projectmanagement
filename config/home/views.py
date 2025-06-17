@@ -16,6 +16,12 @@ class ProjectManager(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
 
 
+    def perform_create(self, serializer):
+        # هنگام ساخت پروژه کاربر لاگین کرده را به عنوان صاحب پروژه ثبت میکند
+        serializer.save(owner=self.request.user)
+        return super().perform_create(serializer)
+
+
 class TaskManager(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
