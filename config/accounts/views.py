@@ -3,7 +3,7 @@ from rest_framework import generics
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 # Create your views here.
@@ -13,6 +13,11 @@ User = get_user_model()
 class UsersManager(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class UserCreateView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny,]
 
 
 

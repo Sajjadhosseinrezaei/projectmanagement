@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('', include('home.urls', namespace='home')),
+    path('api/', include('home.urls', namespace='home')),
     path('api/accounts/', include('accounts.urls', namespace='acconuts')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     # Optional UI:
