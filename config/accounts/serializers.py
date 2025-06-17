@@ -24,17 +24,21 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
     
+    # accounts/serializers.py -> UserSerializer
+
+    # نسخه صحیح و مقاوم
     def update(self, instance, validated_data):
-        
+        # رمز عبور را جدا می‌کنیم تا به صورت خاص آن را مدیریت کنیم
         password = validated_data.pop('password', None)
 
-        for attr , val in validated_data.items():
-            setattr(instance, attr, val)
+        # ۱. فیلدهای عادی (مثل name و email) را به متد update کلاس والد می‌سپاریم
+        # این متد به صورت استاندارد فیلدها را آپدیت کرده و instance.save() را فراخوانی می‌کند
+        instance = super().update(instance, validated_data)
 
+        # ۲. اگر رمز عبور جدیدی ارسال شده بود، آن را هش کرده و دوباره ذخیره می‌کنیم
         if password:
             instance.set_password(password)
-
-        instance.save()
+            instance.save()
 
         return instance
     
