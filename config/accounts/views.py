@@ -3,9 +3,10 @@ from rest_framework import generics
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from .permissions import IsOwnerOrAdmin
 # Create your views here.
 
 User = get_user_model()
@@ -13,6 +14,26 @@ User = get_user_model()
 class UsersManager(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def get_permissions(self):
+        """
+        تعیین سظح دسترسی بر اساس نوع درخواست 
+        """
+
+        # به ثبت نام همه دسترسی دارند
+        if self.action == 'create':
+            permission_classes = [AllowAny,]
+        
+        # فقط ادمین ها به لیست کاربران دسترسی دارند
+        elif self.action == 'list':
+            permission_classes = [IsAdminUser,]
+
+        # برای بقیه اکشن ها کاربر باید لاگین کرده باشد و صاحب پروفایل یا ادمین باشد
+        else:
+            permission_classes = [IsAuthenticated, IsOwnerOrAdmin]
+
+
+        return [permission() for permission in permission_classes]
 
 class UserCreateView(generics.CreateAPIView):
     queryset = User.objects.all()
